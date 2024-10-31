@@ -39,6 +39,8 @@ spec:
             value: $(params.repo_url)
           - name: revision
             value: $(params.revision)
+          - name: subdirectory
+            value: $(params.repo_name)
       - name: s2i-httpd-build
         taskRef:
           name: s2i-httpd-1-16-0
@@ -46,6 +48,8 @@ spec:
         runAfter:
           - fetch-repository
         params:
+        - name: PATH_CONTEXT
+          value:  $(workspaces.source.path)/$(params.repo_name)
         - name: IMAGE
           value: "image-registry.openshift-image-registry.svc:5000/httpd/demo:1.0"
         - name: TLSVERIFY
@@ -65,6 +69,10 @@ spec:
           - name: basic-auth
             workspace: basic-auth
         params:
+          - name: PARAM_DELETE_EXISTING
+            value: "false"
+          - name: subdirectory
+            value: "shared-helm-charts"
           - name: url
             value: https://github.com/devhub-showcase/shared-helm-charts.git
           - name: revision

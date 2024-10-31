@@ -84,7 +84,7 @@ spec:
           - name: RELEASE_NAME
             value: $(params.repo_name)-$(params.pull_request_number)
           - name: charts_dir
-            value: "$(workspaces.source.path)/shared-helm-charts/charts/deploy"
+            value: "$(workspaces.source.path)/charts/deploy"
           - name: overwrite_values
             value: image.repository=image-registry.openshift-image-registry.svc:5000/httpd/demo,image.tag=1.0
   workspaces:

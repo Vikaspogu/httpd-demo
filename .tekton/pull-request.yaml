@@ -39,6 +39,8 @@ spec:
         taskRef:
           name: s2i-httpd-1-16-0
           kind: ClusterTask
+        runAfter:
+          - fetch-repository
         params:
         - name: IMAGE
           value: "image-registry.openshift-image-registry.svc:5000/httpd/demo:1.0"

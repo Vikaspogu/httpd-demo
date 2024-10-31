@@ -35,7 +35,7 @@ spec:
             value: $(params.repo_url)
           - name: revision
             value: $(params.revision)
-      - name: fetch-repository
+      - name: s2i-httpd-build
         taskRef:
           name: s2i-httpd-1-16-0
           kind: ClusterTask

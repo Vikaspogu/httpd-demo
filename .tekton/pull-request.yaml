@@ -76,7 +76,7 @@ spec:
         runAfter:
           - fetch-helm-chart-repository
         workspaces:
-          - name: output
+          - name: source
             workspace: source
         params:
           - name: release_namespace

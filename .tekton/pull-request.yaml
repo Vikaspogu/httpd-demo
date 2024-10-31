@@ -13,6 +13,10 @@ spec:
       value: "{{ repo_url }}"
     - name: revision
       value: "{{ revision }}"
+    - name: repo_name
+      value: "{{ repo_name }}"
+    - name: pull_request_number
+      value: "{{ pull_request_number }}"
   pipelineSpec:
     params:
       - name: repo_url
@@ -49,6 +53,38 @@ spec:
         workspaces:
           - name: source
             workspace: source
+      - name: fetch-helm-chart-repository
+        taskRef:
+          name: git-clone
+          kind: ClusterTask
+        runAfter:
+          - s2i-httpd-build
+        workspaces:
+          - name: output
+            workspace: source
+          - name: basic-auth
+            workspace: basic-auth
+        params:
+          - name: url
+            value: https://github.com/devhub-showcase/shared-helm-charts.git
+          - name: revision
+            value: main
+      - name: install-helm-chart
+        taskRef:
+          name: helm-upgrade-from-source
+          kind: ClusterTask
+        runAfter:
+          - fetch-helm-chart-repository
+        workspaces:
+          - name: output
+            workspace: source
+        params:
+          - name: RELEASE_NAME
+            value: $(params.repo_name)-$(params.pull_request_number)
+          - name: charts_dir
+            value: "$(workspaces.source.path)/shared-helm-charts/charts/deploy"
+          - name: overwrite_values
+            value: image.repository=image-registry.openshift-image-registry.svc:5000/httpd/demo,image.tag=1.0
   workspaces:
   - name: source
     volumeClaimTemplate:

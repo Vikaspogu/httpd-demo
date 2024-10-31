@@ -79,6 +79,8 @@ spec:
           - name: output
             workspace: source
         params:
+          - name: release_namespace
+            value: httpd
           - name: RELEASE_NAME
             value: $(params.repo_name)-$(params.pull_request_number)
           - name: charts_dir

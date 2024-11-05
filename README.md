@@ -1,1 +1,1 @@
-# Pipeline as code
+# Pipeline as code OpenShift

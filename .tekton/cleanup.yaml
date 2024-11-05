@@ -4,7 +4,6 @@ kind: PipelineRun
 metadata:
   name: cleanup-pull-request
   annotations:
-    pipelinesascode.tekton.dev/on-target-branch: "[main]"
     pipelinesascode.tekton.dev/max-keep-runs: "5"
     pipelinesascode.tekton.dev/on-cel-expression: |
       headers['x-github-event'] == "pull_request" && body.action == "closed"  

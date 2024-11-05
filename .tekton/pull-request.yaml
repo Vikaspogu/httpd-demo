@@ -15,12 +15,17 @@ spec:
       value: "{{ revision }}"
     - name: repo_name
       value: "{{ repo_name }}"
-    - name: pull_request_number
-      value: "{{ pull_request_number }}"
+    - name: source_branch
+      value: "{{ source_branch }}"
+    - name: namespace
+      value: demo-application
   pipelineSpec:
     params:
       - name: repo_url
       - name: revision
+      - name: repo_name
+      - name: source_branch
+      - name: namespace
     workspaces:
       - name: source
       - name: basic-auth
@@ -88,13 +93,13 @@ spec:
             workspace: source
         params:
           - name: release_namespace
-            value: httpd
-          - name: RELEASE_NAME
-            value: $(params.repo_name)-$(params.pull_request_number)
+            value: $(params.namespace)
+          - name: release_name
+            value: $(params.repo_name)-$(params.source_branch)
           - name: charts_dir
             value: "$(workspaces.source.path)/charts/deploy"
           - name: overwrite_values
-            value: image.repository=image-registry.openshift-image-registry.svc:5000/httpd/demo,image.tag=1.0
+            value: image.repository=image-registry.openshift-image-registry.svc:5000/$(params.namespace)/$(params.repo_name),image.tag=$(params.source_branch)
   workspaces:
   - name: source
     volumeClaimTemplate:

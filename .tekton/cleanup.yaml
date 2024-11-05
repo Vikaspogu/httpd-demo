@@ -7,7 +7,7 @@ metadata:
     pipelinesascode.tekton.dev/on-target-branch: "[main]"
     pipelinesascode.tekton.dev/max-keep-runs: "5"
     pipelinesascode.tekton.dev/on-cel-expression: |
-      event == "pull_request" && body.action == "closed"  
+      headers['x-github-event'] == "pull_request" && body.action == "closed"  
 spec:
   params:
     - name: repo_url

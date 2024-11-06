@@ -31,7 +31,7 @@ spec:
     tasks:
       - name: uninstall-helm-chart
         when:
-          - cel: "'$(params.commit_message)'.startsWith('Merge pull request')"
+          - cel: "'$(params.commit_message)'.matches('Merge pull request.*')"
         taskRef:
           name: helm-uninstall
           kind: ClusterTask

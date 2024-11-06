@@ -30,6 +30,10 @@ spec:
       - name: basic-auth
     tasks:
       - name: uninstall-helm-chart
+        when:
+          - input: "{$(params.commit_message)"
+            operator: in
+            values: ["Merge pull request"]
         taskRef:
           name: helm-uninstall
           kind: ClusterTask

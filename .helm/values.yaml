@@ -1,4 +1,4 @@
 image:
   repository: quay.io/rhn_gps_vpogu/httpd-demo
   pullPolicy: IfNotPresent
-  tag: 268076d177436913de9a52826eba69a46d82ac09
+  tag: cfcfe18af2f6ae526524567a4ee86eb4de282461

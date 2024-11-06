@@ -1,3 +1,4 @@
 # Pipeline as code OpenShift
 
-## Todo
+1. Pull request
+2. Cleanup

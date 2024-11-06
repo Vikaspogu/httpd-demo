@@ -4,9 +4,11 @@ kind: PipelineRun
 metadata:
   name: cleanup-pull-request
   annotations:
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/on-event: "[push]"
     pipelinesascode.tekton.dev/max-keep-runs: "5"
     pipelinesascode.tekton.dev/on-cel-expression: |
-      event == "pull_request" && target_branch == "main" && body.pull_request.state == "closed"
+      body.head_commit.message.startsWith("[Merge pull request]")
 spec:
   params:
     - name: repo_url
@@ -15,8 +17,8 @@ spec:
       value: "{{ revision }}"
     - name: repo_name
       value: "{{ repo_name }}"
-    - name: source_branch
-      value: "{{ source_branch }}"
+    - name: commit_message
+      value: "{{ body.head_commit.message }}"
     - name: namespace
       value: demo-application
   pipelineSpec:
@@ -24,7 +26,7 @@ spec:
       - name: repo_url
       - name: revision
       - name: repo_name
-      - name: source_branch
+      - name: commit_message
       - name: namespace
     workspaces:
       - name: basic-auth
@@ -34,10 +36,12 @@ spec:
           name: helm-uninstall
           kind: ClusterTask
         params:
+          - name: commit_message
+            value: "$(params.commit_message)"
           - name: release_namespace
             value: $(params.namespace)
           - name: release_name
-            value: $(params.repo_name)-$(params.source_branch)
+            value: $(params.repo_name)
   workspaces:
   - name: basic-auth
     secret:

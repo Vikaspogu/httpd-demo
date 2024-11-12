@@ -43,6 +43,8 @@ spec:
         taskRef:
           name: git-clone
           kind: ClusterTask
+        runAfter:
+          - truncate-revision
         workspaces:
           - name: output
             workspace: source

@@ -28,6 +28,17 @@ spec:
       - name: basic-auth
       - name: dockerconfig
     tasks:
+      - name: truncate-revision
+        taskSpec:
+          results:
+            - name: short-revision
+              type: string
+          steps:
+            - name: short-revision
+              image: busybox
+              command: ["/bin/sh", "-c"]
+              args:
+                - echo -n "$(params.revision)" | head -c 7 | tee $(results.short-revision.path)
       - name: fetch-repository
         taskRef:
           name: git-clone
@@ -54,7 +65,7 @@ spec:
         - name: PATH_CONTEXT
           value:  $(workspaces.source.path)/$(params.repo_name)
         - name: IMAGE
-          value: "quay.io/rhn_gps_vpogu/$(params.repo_name):$(params.revision)"
+          value: "quay.io/rhn_gps_vpogu/$(params.repo_name):$(tasks.truncate-revision.results.short-revision)"
         workspaces:
           - name: source
             workspace: source

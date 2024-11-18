@@ -5,6 +5,7 @@ metadata:
   name: main
   annotations:
     pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/target-namespace: "cicd-tools"
     pipelinesascode.tekton.dev/on-event: "[push]"
     pipelinesascode.tekton.dev/max-keep-runs: "5"
 spec:
